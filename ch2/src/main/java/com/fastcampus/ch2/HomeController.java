@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 // 1. 원격 프로그램으로 등록
-@RestController
-public class HelloController { // 원격 프로그램
+@Controller
+public class HomeController { // 원격 프로그램
     // 2. URL과 메소드를 연결
-    @RequestMapping("/hello")
+    @RequestMapping("/")
     public String main() {
-        System.out.println("Hello");
-        return "Hello";
+        return "index"; // templates/index.html
     }
 }
 
