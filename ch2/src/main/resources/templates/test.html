@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        select {
+            width: 80px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="|year  : ${#request.getAttribute('year')}|"></h1>
+<h1 th:text="|id  : ${#session.getAttribute('id')}|"></h1>
+<h1 th:text="|email  : ${#servletContext.getAttribute('email')}|"></h1>
+
+<h1 th:text="|year  : ${year}|"></h1>
+<h1 th:text="|id  : ${session.id}|"></h1>
+<h1 th:text="|email  : ${application.email}|"></h1>
+
+<script th:inline="javascript">
+    var firstName = [[${firstName}]]
+    var lastName = /*[[${lastName}]]*/ "testName"
+    var arr = [[${list}]]
+    var userObj = [[${user}]]
+</script>
+
+
+<!--<a href="board.html" th:href="@{/board/list(bno=${bno}, type='L')}">aaa</a>-->
+
+
+<!--/*/<th:block th:each="opt : ${list}">/*/-->
+    <input type="checkbox" th:value="${opt}">[[${opt}]]<br>
+<!--/*/</th:block>/*/-->
+
+
+
+<select name="" id="" multiple>
+    <option th:each="opt : ${list}" th:value="${opt}">[[${opt}]]</option>
+</select>
+
+    <table border="1px">
+        <tr th:each="item : ${list}">
+            <td th:text="${item}"></td>
+        </tr>
+        <!--/*-->
+        <tr>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+        </tr>
+        <!--*/-->
+        <tr th:unless="${list.size}==0">
+            <td>게시물이 없습니다.</td>
+        </tr>
+    </table>
+
+
+
+    <span th:text="${lastName}">Jyeon</span>
+    <span>[[${firstName}]]</span>
+
+    <span th:text="'My name is ' + ${lastName} + ',' + ${firstName}"></span>
+    <span th:text="|My name is ${lastName}, ${firstName}|"></span>
+
+    <span th:text="${'<i>JYeon, C</i>'}">JYeon, C</span>
+    <span th:utext="${'<i>JYeon, C</i>'}">JYeon, C</span>
+</form>
+</body>
+</html>
