@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ public class HomeController { // 원격 프로그램
         model.addAttribute("bno", "123");
         model.addAttribute("user", new User("aaa",20));
 
-        return "test"; // templates/test.html
+        return "templates/layouts/test"; // templates/test.html
     }
 }
 
