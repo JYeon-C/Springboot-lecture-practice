@@ -1,9 +1,12 @@
 package com.fastcampus.ch3.di4;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -69,11 +72,10 @@ class FalseCondition implements Condition {
     }
 }
 
-//@Import({Config1.class, Config2.class})
-
+@Configuration
+@Import({Config1.class, Config2.class})
 //@Import(MyImportSelector.class)
-
-@EnableMyAutoConfiguration("test")
+//@EnableMyAutoConfiguration("test")
 class MainConfig{ @Bean Car car() {return new Car();}}
 
 class Config1{ @Bean Car sportsCar() {return new SportsCar();}}
@@ -102,15 +104,23 @@ class MyImportSelector implements ImportSelector {
 }
 
 
+@EnableConfigurationProperties({MyProperties.class})  // 클래스 지정
 //@SpringBootApplication // 은 아래의 3개 애너테이션을 붙인것과 동일
 @Configuration
 //@EnableAutoConfiguration
 @ComponentScan
-public class Main {
-    public static void main(String[] args) {
-//        ApplicationContext ac = SpringApplication.run(Main.class, args);
-//        ApplicationContext ac = new AnnotationConfigApplicationContext(MainConfig.class, Config1.class, Config2.class);
-        ApplicationContext ac = new AnnotationConfigApplicationContext(MainConfig.class);
+public class Main implements CommandLineRunner {
+    @Autowired
+    MyProperties prop; // 인스턴스 변수
+
+    @Autowired
+    ApplicationContext ac;
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("prop.getEmail() = " + prop.getEmail());
+        System.out.println("prop.getDomain() = " + prop.getDomain());
+
         System.out.println("ac = " + ac);
         String[] beanDefinitionNames = ac.getBeanDefinitionNames();
 
@@ -118,12 +128,23 @@ public class Main {
         Arrays.stream(beanDefinitionNames) // 배열의 스트림을 반환
                 .filter(b->!b.startsWith("org"))
                 .forEach(System.out::println); // 스트림의 요소를 하나씩 꺼내서 출력
+    }
 
-        System.out.println("ac.getBean(\"sportsCar\") = " + ac.getBean("sportsCar"));
+    public static void main(String[] args) {
+        ApplicationContext ac = SpringApplication.run(Main.class, args);
+//        ApplicationContext ac = new AnnotationConfigApplicationContext(MainConfig.class, Config1.class, Config2.class);
+//        ApplicationContext ac = new AnnotationConfigApplicationContext(MainConfig.class);
+
+//        System.out.println("ac.getBean(\"sportsCar\") = " + ac.getBean("sportsCar"));
+//        MyProperties prop = ac.getBean(MyProperties.class);
+//        System.out.println("prop.getDomain() = " + prop.getDomain());
+//        System.out.println("prop.getEmail() = " + prop.getEmail());
     }
 
     @Bean
     MyBean myBean() {return new MyBean();}
+
+
 }
 
     class MyBean {}
